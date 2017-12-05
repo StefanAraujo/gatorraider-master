@@ -5,7 +5,7 @@ import game.models.Defender;
 import java.util.List;
 
 public class _Defender extends _Actor implements Defender
-{
+    {
     public int getVulnerableTime()
     {
         return vulnerableTime;

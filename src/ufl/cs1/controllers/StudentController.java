@@ -1,8 +1,12 @@
 package ufl.cs1.controllers;
 
 import game.controllers.DefenderController;
+import game.controllers.benchmark.Devastator;
+import game.models.Attacker;
 import game.models.Defender;
 import game.models.Game;
+import game.models.Node;
+import sun.invoke.empty.Empty;
 
 import java.util.List;
 
@@ -19,15 +23,57 @@ public final class StudentController implements DefenderController
 		
 		//Chooses a random LEGAL action if required. Could be much simpler by simply returning
 		//any random number of all of the ghosts
-		for(int i = 0; i < actions.length; i++)
-		{
-			Defender defender = enemies.get(i);
-			List<Integer> possibleDirs = defender.getPossibleDirs();
-			if (possibleDirs.size() != 0)
-				actions[i]=possibleDirs.get(Game.rng.nextInt(possibleDirs.size()));
-			else
-				actions[i] = -1;
+
+		Defender red = enemies.get(0);
+		List<Integer> possibleDirs0 = red.getPossibleDirs();
+
+		if (red.isVulnerable()){
+			actions[0] = red.getNextDir(game.getAttacker().getLocation(), false);
 		}
+		else {
+			if (possibleDirs0.size() != 0)
+				actions[0] = red.getNextDir(game.getAttacker().getLocation(), true);
+			else
+				actions[0] = -1;
+		}
+
+		Defender pink = enemies.get(1);
+		List<Integer> possibleDirs1 = pink.getPossibleDirs();
+
+		if (pink.isVulnerable()){
+			actions[1] = pink.getNextDir(game.getAttacker().getLocation(), false);
+		}
+		else{
+			if (possibleDirs1.size() != 0)
+				actions[1] = pink.getNextDir(game.getAttacker().getLocation(), true);
+			else
+				actions[1] = -1;
+		}
+
+		Defender orange = enemies.get(2);
+		List<Integer> possibleDirs2 = orange.getPossibleDirs();
+		List<Node> powerpills = game.getPowerPillList();
+		Node closest=null;
+		int distance=10000;
+
+		for (int i=0; i<powerpills.size();i++){
+			if (game.getAttacker().getLocation().getPathDistance(powerpills.get(i))<distance){
+				closest = powerpills.get(i);
+				distance = game.getAttacker().getLocation().getPathDistance(powerpills.get(i));
+			}
+		}
+
+		if (orange.isVulnerable()) {
+			actions[2] = orange.getNextDir(game.getAttacker().getLocation(), false);
+		}else {
+			if (possibleDirs2.size() != 0 && powerpills.size() != 0)
+				actions[2] = orange.getNextDir(closest, true);
+			else
+				actions[2] = -1;
+		}
+
 		return actions;
+
+		}
+
 	}
-}
