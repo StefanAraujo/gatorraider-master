@@ -1,6 +1,8 @@
 package ufl.cs1.controllers;
 
 import game.controllers.DefenderController;
+import game.controllers.benchmark.Devastator;
+import game.models.Attacker;
 import game.models.Defender;
 import game.models.Game;
 
@@ -16,18 +18,57 @@ public final class StudentController implements DefenderController
 	{
 		int[] actions = new int[Game.NUM_DEFENDER];
 		List<Defender> enemies = game.getDefenders();
+		Defender red = enemies.get(0);
+		Defender pink = enemies.get(1);
+		Defender yellow = enemies.get(2);
+		Defender blue = enemies.get(3);
 		
 		//Chooses a random LEGAL action if required. Could be much simpler by simply returning
 		//any random number of all of the ghosts
 		for(int i = 0; i < actions.length; i++)
 		{
-			Defender defender = enemies.get(i);
-			List<Integer> possibleDirs = defender.getPossibleDirs();
-			if (possibleDirs.size() != 0)
-				actions[i]=possibleDirs.get(Game.rng.nextInt(possibleDirs.size()));
+			List<Integer> possibleDirs0 = red.getPossibleDirs();
+			List<Integer> possibleDirs1 = pink.getPossibleDirs();
+			List<Integer> possibleDirs2 = yellow.getPossibleDirs();
+			List<Integer> possibleDirs3 = blue.getPossibleDirs();
+			if (possibleDirs0.size() != 0) //red dude
+			{
+				actions[0] = red.getNextDir(game.getAttacker().getLocation(), true);
+			}
 			else
-				actions[i] = -1;
+			{
+				actions[0] = -1;
+			}
+			if (possibleDirs1.size() != 0)//pink dude
+			{
+				actions[1] = pink.getNextDir(game.getAttacker().getLocation(), true);
+			}
+			else
+			{
+				actions[1] = -1;
+			}
+			if (possibleDirs2.size() != 0)//yellow dude
+			{
+				actions[2] = yellow.getNextDir(game.getAttacker().getLocation(), false);
+			}
+			else
+			{
+				actions[2] = -1;
+			}
+			if (possibleDirs3.size() != 0)//blue dude
+			{
+				if (game.getAttacker().getLocation().getPathDistance(game.getDefender(0).getLocation()) <= 10)
+					actions[3] = blue.getNextDir(game.getAttacker().getLocation(), true);
+				else
+					actions[3] = blue.getNextDir(game.getAttacker().getLocation(), false);
+
+			}
+			else
+			{
+				actions[3] = -1;
+			}
 		}
+
 		return actions;
 	}
 }
