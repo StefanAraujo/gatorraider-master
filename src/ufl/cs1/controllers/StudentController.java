@@ -25,48 +25,49 @@ public final class StudentController implements DefenderController
 		
 		//Chooses a random LEGAL action if required. Could be much simpler by simply returning
 		//any random number of all of the ghosts
-		for(int i = 0; i < actions.length; i++)
-		{
-			List<Integer> possibleDirs0 = red.getPossibleDirs();
-			List<Integer> possibleDirs1 = pink.getPossibleDirs();
-			List<Integer> possibleDirs2 = yellow.getPossibleDirs();
-			List<Integer> possibleDirs3 = blue.getPossibleDirs();
-			if (possibleDirs0.size() != 0) //red dude
-			{
-				actions[0] = red.getNextDir(game.getAttacker().getLocation(), true);
-			}
-			else
-			{
-				actions[0] = -1;
-			}
-			if (possibleDirs1.size() != 0)//pink dude
-			{
-				actions[1] = pink.getNextDir(game.getAttacker().getLocation(), true);
-			}
-			else
-			{
-				actions[1] = -1;
-			}
-			if (possibleDirs2.size() != 0)//yellow dude
-			{
-				actions[2] = yellow.getNextDir(game.getAttacker().getLocation(), false);
-			}
-			else
-			{
-				actions[2] = -1;
-			}
-			if (possibleDirs3.size() != 0)//blue dude
-			{
-				if (game.getAttacker().getLocation().getPathDistance(game.getDefender(0).getLocation()) <= 10)
-					actions[3] = blue.getNextDir(game.getAttacker().getLocation(), true);
-				else
-					actions[3] = blue.getNextDir(game.getAttacker().getLocation(), false);
 
-			}
+		List<Integer> possibleDirs0 = red.getPossibleDirs();
+		List<Integer> possibleDirs1 = pink.getPossibleDirs();
+		List<Integer> possibleDirs2 = yellow.getPossibleDirs();
+		List<Integer> possibleDirs3 = blue.getPossibleDirs();
+		if (possibleDirs0.size() != 0) //red dude
+		{
+			actions[0] = red.getNextDir(game.getAttacker().getLocation(), true);
+		}
+		else
+		{
+			actions[0] = -1;
+		}
+		if (possibleDirs1.size() != 0)//pink dude
+		{
+			actions[1] = pink.getNextDir(game.getAttacker().getLocation(), true);
+		}
+		else
+		{
+			actions[1] = -1;
+		}
+		if (possibleDirs2.size() != 0)//yellow dude
+		{
+			if (game.getAttacker().getLocation().getPathDistance(game.getDefender(3).getLocation()) <= 10)
+				actions[2] = yellow.getNextDir(game.getAttacker().getLocation(), true);
 			else
-			{
-				actions[3] = -1;
-			}
+				actions[2] = yellow.getNextDir(game.getAttacker().getLocation(), false);
+		}
+		else
+		{
+			actions[2] = -1;
+		}
+		if (possibleDirs3.size() != 0)//blue dude
+		{
+			if (game.getAttacker().getLocation().getPathDistance(game.getDefender(0).getLocation()) <= 10)
+				actions[3] = blue.getNextDir(game.getAttacker().getLocation(), true);
+			else
+				actions[3] = blue.getNextDir(game.getAttacker().getLocation(), false);
+
+		}
+		else
+		{
+			actions[3] = -1;
 		}
 
 		return actions;
