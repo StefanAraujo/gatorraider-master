@@ -20,7 +20,7 @@ public final class StudentController implements DefenderController
 		List<Defender> enemies = game.getDefenders();
 		Defender red = enemies.get(0);
 		Defender pink = enemies.get(1);
-		Defender yellow = enemies.get(2);
+		Defender orange = enemies.get(2);
 		Defender blue = enemies.get(3);
 		
 		//Chooses a random LEGAL action if required. Could be much simpler by simply returning
@@ -28,7 +28,7 @@ public final class StudentController implements DefenderController
 
 		List<Integer> possibleDirs0 = red.getPossibleDirs();
 		List<Integer> possibleDirs1 = pink.getPossibleDirs();
-		List<Integer> possibleDirs2 = yellow.getPossibleDirs();
+		List<Integer> possibleDirs2 = orange.getPossibleDirs();
 		List<Integer> possibleDirs3 = blue.getPossibleDirs();
 		if (possibleDirs0.size() != 0) //red dude
 		{
@@ -46,12 +46,12 @@ public final class StudentController implements DefenderController
 		{
 			actions[1] = -1;
 		}
-		if (possibleDirs2.size() != 0)//yellow dude
+		if (possibleDirs2.size() != 0)//orange dude
 		{
-			if (game.getAttacker().getLocation().getPathDistance(game.getDefender(3).getLocation()) <= 10)
-				actions[2] = yellow.getNextDir(game.getAttacker().getLocation(), true);
+			if (game.getAttacker().getLocation().getPathDistance(game.getDefender(3).getLocation()) <= 12)
+				actions[2] = orange.getNextDir(game.getAttacker().getLocation(), true);
 			else
-				actions[2] = yellow.getNextDir(game.getAttacker().getLocation(), false);
+				actions[2] = orange.getNextDir(game.getAttacker().getLocation(), false);
 		}
 		else
 		{
