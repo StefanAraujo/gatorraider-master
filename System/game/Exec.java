@@ -79,7 +79,7 @@ public class Exec
     	
 		game=new _Game_();
 		
-		for(int i=1;i<=trials;i++)
+		for(int i=0;i<trials;i++)
 		{
 			game.newGame();
 			attackerController.init(game.copy());

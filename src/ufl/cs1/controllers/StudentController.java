@@ -5,6 +5,7 @@ import game.controllers.benchmark.Devastator;
 import game.models.Attacker;
 import game.models.Defender;
 import game.models.Game;
+import game.models.Node;
 
 import java.util.List;
 
@@ -30,9 +31,24 @@ public final class StudentController implements DefenderController
 		List<Integer> possibleDirs1 = pink.getPossibleDirs();
 		List<Integer> possibleDirs2 = orange.getPossibleDirs();
 		List<Integer> possibleDirs3 = blue.getPossibleDirs();
+		List<Node> powerPills = game.getPowerPillList();
+		Node closestPowerPill = null;
+		int distance = 10000;
+		List<Node> pills = game.getPillList();
+		for (int i = 0; i < powerPills.size(); ++i)
+		{
+			if (game.getAttacker().getLocation().getPathDistance(powerPills.get(i)) < distance)
+			{
+				closestPowerPill = powerPills.get(i);
+				distance = game.getAttacker().getLocation().getPathDistance(closestPowerPill);
+			}
+		}
 		if (possibleDirs0.size() != 0) //red dude
 		{
-			actions[0] = red.getNextDir(game.getAttacker().getLocation(), true);
+			if (powerPills.size() != 0 && distance < 8)
+				actions[0] = red.getNextDir(game.getAttacker().getLocation(), false);
+			else
+				actions[0] = red.getNextDir(game.getAttacker().getLocation(), true);
 		}
 		else
 		{
@@ -40,7 +56,10 @@ public final class StudentController implements DefenderController
 		}
 		if (possibleDirs1.size() != 0)//pink dude
 		{
-			actions[1] = pink.getNextDir(game.getAttacker().getLocation(), true);
+			if (powerPills.size() != 0 && distance < 8)
+				actions[1] = pink.getNextDir(game.getAttacker().getLocation(),true);
+			else
+				actions[1] = pink.getNextDir(game.getAttacker().getLocation(), true);
 		}
 		else
 		{
@@ -50,6 +69,8 @@ public final class StudentController implements DefenderController
 		{
 			if (game.getAttacker().getLocation().getPathDistance(game.getDefender(3).getLocation()) <= 12)
 				actions[2] = orange.getNextDir(game.getAttacker().getLocation(), true);
+			else if (pills.size() < 150)
+				actions[2] = orange.getNextDir(game.getAttacker().getLocation(),true);
 			else
 				actions[2] = orange.getNextDir(game.getAttacker().getLocation(), false);
 		}
