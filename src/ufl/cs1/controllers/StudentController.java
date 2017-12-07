@@ -32,7 +32,7 @@ public final class StudentController implements DefenderController
 		List<Integer> possibleDirs2 = orange.getPossibleDirs();
 		List<Integer> possibleDirs3 = blue.getPossibleDirs();
 		List<Node> powerPills = game.getPowerPillList();
-		Node closestPowerPill = null;
+		Node closestPowerPill;
 		int distance = 10000;
 		List<Node> pills = game.getPillList();
 		for (int i = 0; i < powerPills.size(); ++i)
@@ -45,7 +45,9 @@ public final class StudentController implements DefenderController
 		}
 		if (possibleDirs0.size() != 0) //red dude
 		{
-			if (powerPills.size() != 0 && distance < 8)
+			if (red.isVulnerable())
+			    actions[0] = red.getNextDir(game.getAttacker().getLocation(), false);
+		    else if (powerPills.size() != 0 && distance < 8)
 				actions[0] = red.getNextDir(game.getAttacker().getLocation(), false);
 			else
 				actions[0] = red.getNextDir(game.getAttacker().getLocation(), true);
@@ -56,8 +58,8 @@ public final class StudentController implements DefenderController
 		}
 		if (possibleDirs1.size() != 0)//pink dude
 		{
-			if (powerPills.size() != 0 && distance < 8)
-				actions[1] = pink.getNextDir(game.getAttacker().getLocation(),true);
+			if (pink.isVulnerable())
+			    actions[1] = pink.getNextDir(game.getAttacker().getLocation(), false);
 			else
 				actions[1] = pink.getNextDir(game.getAttacker().getLocation(), true);
 		}
@@ -67,10 +69,12 @@ public final class StudentController implements DefenderController
 		}
 		if (possibleDirs2.size() != 0)//orange dude
 		{
-			if (game.getAttacker().getLocation().getPathDistance(game.getDefender(3).getLocation()) <= 12)
+			if (orange.isVulnerable())
+                actions[2] = orange.getNextDir(game.getAttacker().getLocation(), false);
+		    else if (game.getAttacker().getLocation().getPathDistance(game.getDefender(3).getLocation()) <= 12)
 				actions[2] = orange.getNextDir(game.getAttacker().getLocation(), true);
 			else if (pills.size() < 150)
-				actions[2] = orange.getNextDir(game.getAttacker().getLocation(),true);
+				actions[2] = orange.getNextDir(game.getAttacker().getLocation(), true);
 			else
 				actions[2] = orange.getNextDir(game.getAttacker().getLocation(), false);
 		}
@@ -80,7 +84,9 @@ public final class StudentController implements DefenderController
 		}
 		if (possibleDirs3.size() != 0)//blue dude
 		{
-			if (game.getAttacker().getLocation().getPathDistance(game.getDefender(0).getLocation()) <= 10)
+			if (blue.isVulnerable())
+                actions[3] = blue.getNextDir(game.getAttacker().getLocation(), false);
+		    else if (game.getAttacker().getLocation().getPathDistance(game.getDefender(0).getLocation()) <= 10)
 				actions[3] = blue.getNextDir(game.getAttacker().getLocation(), true);
 			else
 				actions[3] = blue.getNextDir(game.getAttacker().getLocation(), false);
